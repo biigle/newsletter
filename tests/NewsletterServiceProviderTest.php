@@ -1,8 +1,8 @@
 <?php
 
-namespace Biigle\Tests\Modules\Module;
+namespace Biigle\Tests\Modules\Newsletter;
 
-use Biigle\Modules\Module\NewsletterServiceProvider;
+use Biigle\Modules\Newsletter\NewsletterServiceProvider;
 use TestCase;
 
 class NewsletterServiceProviderTest extends TestCase

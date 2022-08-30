@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Module;
+namespace Biigle\Modules\Newsletter;
 
 use Biigle\Services\Modules;
 use Illuminate\Routing\Router;

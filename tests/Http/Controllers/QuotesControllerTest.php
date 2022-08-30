@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Tests\Modules\Module\Http\Controllers;
+namespace Biigle\Tests\Modules\Newsletter\Http\Controllers;
 
 use Biigle\Tests\UserTest;
 use TestCase;

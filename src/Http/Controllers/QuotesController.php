@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Module\Http\Controllers;
+namespace Biigle\Modules\Newsletter\Http\Controllers;
 
 use Biigle\Http\Controllers\Views\Controller;
 
