@@ -18,6 +18,7 @@ class NewsletterServiceProvider extends ServiceProvider
    */
     public function boot(Modules $modules, Router $router)
     {
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'newsletter');
 
         $router->group([
