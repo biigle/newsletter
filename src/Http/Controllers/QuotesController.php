@@ -14,7 +14,7 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        return view('module::index');
+        return view('newsletter::index');
     }
 
     /**
