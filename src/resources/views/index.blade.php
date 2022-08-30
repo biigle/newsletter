@@ -10,8 +10,8 @@
 @endsection
 
 @push('scripts')
-<script src="{{ cachebust_asset('vendor/module/scripts/main.js') }}"></script>
+<script src="{{ cachebust_asset('vendor/newsletter/scripts/main.js') }}"></script>
 @endpush
 @push('styles')
-<link href="{{ cachebust_asset('vendor/module/styles/main.css') }}" rel="stylesheet">
+<link href="{{ cachebust_asset('vendor/newsletter/styles/main.css') }}" rel="stylesheet">
 @endpush
