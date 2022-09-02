@@ -2,8 +2,10 @@
 
 namespace Biigle\Modules\Newsletter\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Notifications\VerifyEmail as Base;
-
+use Illuminate\Notifications\Messages\MailMessage;
+use URL;
 
 class VerifyEmail extends Base
 {

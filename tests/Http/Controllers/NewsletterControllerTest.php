@@ -8,6 +8,7 @@ use Biigle\Tests\UserTest;
 use Honeypot;
 use Illuminate\Support\Facades\Notification;
 use TestCase;
+use View;
 
 class NewsletterControllerTest extends TestCase
 {
@@ -58,6 +59,27 @@ class NewsletterControllerTest extends TestCase
         $this->assertEquals(1, NewsletterSubscriber::count());
 
         Notification::assertNothingSent();
+    }
+
+    public function testCreatePrivacy()
+    {
+        Notification::fake();
+        Honeypot::disable();
+        View::shouldReceive('exists')->with('privacy')->andReturn(true);
+        View::shouldReceive('share')->passthru();
+        View::shouldReceive('make')->andReturn('');
+        $this->postJson('newsletter/subscribe', [
+                'email' => 'joe@user.com',
+                'homepage' => 'abc',
+            ])
+            ->assertStatus(422);
+
+        $this->postJson('newsletter/subscribe', [
+                'email' => 'joe@user.com',
+                'homepage' => 'abc',
+                'privacy' => '1',
+            ])
+            ->assertStatus(200);
     }
 
     public function testCreated()

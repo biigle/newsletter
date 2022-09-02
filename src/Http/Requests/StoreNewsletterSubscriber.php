@@ -5,6 +5,7 @@ namespace Biigle\Modules\Newsletter\Http\Requests;
 use Biigle\Rules\Uuid4;
 use Biigle\User;
 use Illuminate\Foundation\Http\FormRequest;
+use View;
 
 class StoreNewsletterSubscriber extends FormRequest
 {
@@ -25,11 +26,17 @@ class StoreNewsletterSubscriber extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'email' => 'required|string|email|max:256',
             'website' => 'honeypot',
             'homepage' => 'honeytime:5|required',
         ];
+
+        if (View::exists('privacy')) {
+            $rules['privacy'] = 'required|accepted';
+        }
+
+        return $rules;
     }
 
     /**
