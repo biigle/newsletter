@@ -17,7 +17,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-envelope"></i>
                         </div>
-                        <input type="email" placeholder="{{ trans('form.email') }}" class="form-control" name="email" value="{{ old('email') }}" autofocus required>
+                        <input type="email" placeholder="{{ trans('form.email') }}" class="form-control" name="email" value="{{ old('email', isset($user) ? $user->email : '') }}" autofocus required>
                     </div>
                     @if($errors->has('email'))
                         <span class="help-block">{{ $errors->first('email') }}</span>

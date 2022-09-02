@@ -17,6 +17,15 @@ class NewsletterControllerTest extends TestCase
         $this->get('newsletter')->assertSuccessful();
     }
 
+    public function testIndexLoggedIn()
+    {
+        $u = UserTest::create();
+        $this->be($u);
+        $this->get('newsletter')
+            ->assertSuccessful()
+            ->assertSee($u->email);
+    }
+
     public function testCreate()
     {
         Notification::fake();
