@@ -14,6 +14,9 @@
          "email": "martin@cebitec.uni-bielefeld.de"
       }
     ],
+    "require": {
+        "msurguy/honeypot": "^1.0",
+    },
     "autoload": {
       "psr-4": {
          "Biigle\\Modules\\Newsletter\\": "src"

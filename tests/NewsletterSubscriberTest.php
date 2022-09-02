@@ -16,4 +16,12 @@ class NewsletterSubscriberTest extends ModelTestCase
         $this->assertNotNull($this->model->updated_at);
         $this->assertNull($this->model->email_verified_at);
     }
+
+    public function testVerifiedScope()
+    {
+        $this->assertEquals(0, NewsletterSubscriber::verified()->count());
+        $this->model->email_verified_at = now();
+        $this->model->save();
+        $this->assertEquals(1, NewsletterSubscriber::verified()->count());
+    }
 }

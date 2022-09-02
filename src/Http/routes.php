@@ -1,12 +1,25 @@
 <?php
 
-$router->get('quotes', [
-   'middleware' => 'auth',
-   'as'   => 'quotes',
-   'uses' => 'QuotesController@index',
+use Biigle\Modules\Newsletter\Http\Requests\EmailVerificationRequest;
+
+$router->get('newsletter', [
+   'uses' => 'NewsletterController@index',
 ]);
 
-$router->get('quotes/new', [
-   'middleware' => 'auth',
-   'uses' => 'QuotesController@quote',
+$router->post('newsletter/subscribe', [
+   'uses' => 'NewsletterController@create',
+]);
+
+$router->get('newsletter/verify', [
+   'uses' => 'NewsletterController@created',
+]);
+
+Route::get('newsletter/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('newsletter/subscribed');
+})->middleware(['signed'])->name('newsletter.verify');
+
+$router->get('newsletter/subscribed', [
+   'uses' => 'NewsletterController@subscribed',
 ]);
