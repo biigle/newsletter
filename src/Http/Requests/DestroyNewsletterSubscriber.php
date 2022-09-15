@@ -3,9 +3,8 @@
 namespace Biigle\Modules\Newsletter\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use View;
 
-class StoreNewsletterSubscriber extends FormRequest
+class DestroyNewsletterSubscriber extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +23,11 @@ class StoreNewsletterSubscriber extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'email' => 'required|string|email|max:256',
             'website' => 'honeypot',
             'homepage' => 'honeytime:5|required',
         ];
-
-        if (View::exists('privacy')) {
-            $rules['privacy'] = 'required|accepted';
-        }
-
-        return $rules;
     }
 
     /**

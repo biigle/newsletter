@@ -1,5 +1,5 @@
 @extends('app')
-@section('title', 'Newsletter')
+@section('title', 'Unsubscribe from Newsletter')
 @section('show-navbar', false)
 @section('content')
 <div class="container">
@@ -8,10 +8,10 @@
             <div class="info-text">
                 <h1 class="logo logo--standalone"><span class="logo__biigle">BIIGLE</span> <span class="text-muted">Newsletter</span></h1>
                 <p class="text-muted">
-                    Subscribe to the BIIGLE newsletter to keep up to date with important news and events around BIIGLE!
+                    Please enter your email address to unsubscribe from the BIIGLE newsletter.
                 </p>
             </div>
-            <form class="well clearfix" role="form" method="POST" action="{{ url('newsletter/subscribe') }}">
+            <form class="well clearfix" role="form" method="POST" action="{{ url('newsletter/unsubscribe') }}">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                     <div class="input-group">
                         <div class="input-group-addon">
@@ -23,25 +23,10 @@
                         <span class="help-block">{{ $errors->first('email') }}</span>
                     @endif
                 </div>
-                @if (View::exists('privacy'))
-                    <div class="form-group{{ $errors->has('privacy') ? ' has-error' : '' }}">
-                        <div class="checkbox">
-                            <label>
-                                <input name="privacy" type="checkbox" value="1" required @checked(old('privacy'))> I have read and agree to the <a href="{{route('privacy')}}">privacy notice</a>.
-                            </label>
-                        </div>
-                        @if($errors->has('privacy'))
-                            <span class="help-block">{{ $errors->first('privacy') }}</span>
-                        @endif
-                    </div>
-                @endif
                 {!! Honeypot::generate('website', 'homepage') !!}
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="submit" class="btn btn-success btn-block" value="Subscribe to newsletter">
+                <input type="submit" class="btn btn-warning btn-block" value="Unsubscribe from newsletter">
             </form>
-            <p class="clearfix">
-                <a href="{{ url('newsletter/unsubscribe') }}" class="pull-right" title="Unsubscribe">Unsubscribe</a>
-            </p>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ namespace Biigle\Tests\Modules\Newsletter\Http\Controllers;
 
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use Biigle\Modules\Newsletter\Notifications\VerifyEmail;
+use Biigle\Modules\Newsletter\Notifications\Unsubscribed;
 use Biigle\Tests\UserTest;
 use Honeypot;
 use Illuminate\Support\Facades\Notification;
@@ -63,6 +64,7 @@ class NewsletterControllerTest extends TestCase
                 'email' => $s->email,
                 'homepage' => 'abc',
             ])
+            // Works again so this can't be used to detect subscribed users.
             ->assertStatus(200);
 
         $this->assertEquals(1, NewsletterSubscriber::count());
@@ -99,5 +101,47 @@ class NewsletterControllerTest extends TestCase
     public function testSubscribed()
     {
         $this->get('newsletter/subscribed')->assertSuccessful();
+    }
+
+    public function testUnsubscribe()
+    {
+        $this->get('newsletter/unsubscribe')->assertSuccessful();
+    }
+
+    public function testDestroy()
+    {
+        Notification::fake();
+        $this->postJson('newsletter/unsubscribe')->assertStatus(422);
+
+        $this->postJson('newsletter/unsubscribe', [
+                'email' => 'joe@user.com',
+                'homepage' => 'abc',
+            ])
+            ->assertStatus(422);
+
+        Honeypot::disable();
+
+        // Works with any email address so this can't be used to detect subscribed users.
+        $this->post('newsletter/unsubscribe', [
+                'email' => 'joe@user.com',
+                'homepage' => 'abc',
+            ])
+            ->assertRedirect('newsletter/unsubscribed');
+
+        $s = NewsletterSubscriber::factory()->create();
+
+        $this->post('newsletter/unsubscribe', [
+                'email' => $s->email,
+                'homepage' => 'abc',
+            ])
+            ->assertRedirect('newsletter/unsubscribed');
+
+        $this->assertNull($s->fresh());
+        Notification::assertSentTo([$s], Unsubscribed::class);
+    }
+
+    public function testUnsubscribed()
+    {
+        $this->get('newsletter/unsubscribed')->assertSuccessful();
     }
 }
