@@ -13,6 +13,7 @@ class RegisterControllerMixinTest extends TestCase
 {
     public function testCreate()
     {
+        config(['biigle.user_registration' => true]);
         Notification::fake();
         Honeypot::disable();
 
@@ -38,6 +39,7 @@ class RegisterControllerMixinTest extends TestCase
 
     public function testCreateNo()
     {
+        config(['biigle.user_registration' => true]);
         Notification::fake();
         Honeypot::disable();
 
@@ -57,6 +59,7 @@ class RegisterControllerMixinTest extends TestCase
 
     public function testCreateDuplicate()
     {
+        config(['biigle.user_registration' => true]);
         Notification::fake();
         $s = NewsletterSubscriber::factory()->create();
         Honeypot::disable();
