@@ -5,6 +5,7 @@ namespace Biigle\Modules\Newsletter;
 use Biigle\Services\Modules;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Biigle\Modules\Newsletter\Http\Controllers\Mixins\RegisterControllerMixin;
 
 class NewsletterServiceProvider extends ServiceProvider
 {
@@ -31,9 +32,10 @@ class NewsletterServiceProvider extends ServiceProvider
         $modules->register('newsletter', [
             'viewMixins' => [
                 'adminIndex',
+                'registrationForm',
             ],
             'controllerMixins' => [
-                //
+                'createNewUser' => RegisterControllerMixin::class.'@create',
             ],
             'apidoc' => [
                //__DIR__.'/Http/Controllers/Api/',
