@@ -27,7 +27,7 @@ class StoreNewsletterSubscriber extends FormRequest
         $rules = [
             'email' => 'required|string|email|max:256',
             'website' => 'honeypot',
-            'homepage' => 'honeytime:5|required',
+            'homepage' => 'honeytime:2|required',
         ];
 
         if (View::exists('privacy')) {

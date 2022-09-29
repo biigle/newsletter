@@ -12,7 +12,7 @@
                 </p>
             </div>
             <form class="well clearfix" role="form" method="POST" action="{{ url('newsletter/subscribe') }}">
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->any(['email', 'homepage']) ? ' has-error' : '' }}">
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-envelope"></i>
@@ -21,6 +21,9 @@
                     </div>
                     @if($errors->has('email'))
                         <span class="help-block">{{ $errors->first('email') }}</span>
+                    @endif
+                    @if($errors->has('homepage'))
+                        <span class="help-block">{{ $errors->first('homepage') }}</span>
                     @endif
                 </div>
                 @if (View::exists('privacy'))
