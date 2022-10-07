@@ -2,10 +2,12 @@
 
 namespace Biigle\Modules\Newsletter;
 
+use Biigle\Modules\Newsletter\Console\Commands\PruneStaleSubscribers;
+use Biigle\Modules\Newsletter\Http\Controllers\Mixins\RegisterControllerMixin;
 use Biigle\Services\Modules;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Biigle\Modules\Newsletter\Http\Controllers\Mixins\RegisterControllerMixin;
 
 class NewsletterServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,19 @@ class NewsletterServiceProvider extends ServiceProvider
                //__DIR__.'/Http/Controllers/Api/',
             ],
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PruneStaleSubscribers::class,
+            ]);
+
+            $this->app->booted(function () {
+                $schedule = app(Schedule::class);
+                $schedule->command(PruneStaleSubscribers::class)
+                    ->daily()
+                    ->onOneServer();
+            });
+        }
 
         $this->publishes([
             __DIR__.'/public/assets' => public_path('vendor/newsletter'),
