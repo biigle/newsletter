@@ -33,3 +33,15 @@ $router->post('newsletter/unsubscribe', [
 $router->get('newsletter/unsubscribed', [
    'uses' => 'NewsletterController@unsubscribed',
 ]);
+
+
+$router->group([
+    'namespace' => 'Api',
+    'prefix' => 'api/v1',
+    'middleware' => ['api', 'auth:web,api'],
+], function ($router) {
+    $router->resource('newsletter-subscribers', 'NewsletterSubscriberController', [
+        'only' => ['destroy'],
+        'parameters' => ['newsletter-subscribers' => 'id'],
+    ]);
+});
