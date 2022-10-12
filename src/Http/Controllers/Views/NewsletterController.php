@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Newsletter\Http\Controllers;
+namespace Biigle\Modules\Newsletter\Http\Controllers\Views;
 
 use Biigle\Http\Controllers\Views\Controller;
 use Biigle\Modules\Newsletter\Http\Requests\DestroyNewsletterSubscriber;

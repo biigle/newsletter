@@ -34,6 +34,7 @@ class NewsletterServiceProvider extends ServiceProvider
         $modules->register('newsletter', [
             'viewMixins' => [
                 'adminIndex',
+                'adminMenu',
                 'registrationForm',
             ],
             'controllerMixins' => [

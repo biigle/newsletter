@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Tests\Modules\Newsletter\Http\Controllers;
+namespace Biigle\Tests\Modules\Newsletter\Http\Controllers\Views;
 
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use Biigle\Modules\Newsletter\Notifications\VerifyEmail;

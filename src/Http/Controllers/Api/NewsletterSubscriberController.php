@@ -26,5 +26,11 @@ class NewsletterSubscriberController extends Controller
         $subscriber = NewsletterSubscriber::findOrFail($id);
         $this->authorize('destroy', $subscriber);
         $subscriber->delete();
+
+        if (!$this->isAutomatedRequest()) {
+            return $this->fuzzyRedirect()
+                ->with('message', 'Subscriber deleted.')
+                ->with('messageType', 'success');
+        }
     }
 }

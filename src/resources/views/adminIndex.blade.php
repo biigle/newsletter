@@ -2,7 +2,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                Newsletter subscribers
+                <a href="{{route('newsletter.admin.index')}}">
+                    Newsletter subscribers
+                </a>
                 <span class="pull-right text-muted" title="Total subscribers">
                     {!! number_format(Biigle\Modules\Newsletter\NewsletterSubscriber::count()) !!}
                 </span>
