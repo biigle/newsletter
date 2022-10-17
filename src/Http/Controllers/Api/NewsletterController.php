@@ -28,7 +28,7 @@ class NewsletterController extends Controller
         $n = Newsletter::create($request->validated());
 
         if (!$this->isAutomatedRequest()) {
-            return $this->fuzzyRedirect()
+            return $this->fuzzyRedirect('newsletter.admin.edit', $n->id)
                 ->with('message', 'New newsletter draft created.')
                 ->with('messageType', 'success');;
         }

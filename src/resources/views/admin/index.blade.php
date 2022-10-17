@@ -3,9 +3,19 @@
 @section('title', 'Newsletter subscribers admin area')
 
 @section('admin-content')
-<form class="form-inline inline-block-form" action="{{route('newsletter.admin.index')}}" method="get">
-    <input class="form-control" type="text" name="q" placeholder="Search subscribers" value="{{$query}}">
-</form>
+
+<div class="clearfix">
+    <div class="pull-right">
+        @if ($draft)
+            <a class="btn btn-info" href="{{route('newsletter.admin.edit', $draft->id)}}"><i class="fa fa-inbox"></i> Edit draft</a>
+        @else
+            <a class="btn btn-default" href="{{route('newsletter.admin.create')}}"><i class="fa fa-inbox"></i> Create new draft</a>
+        @endif
+    </div>
+    <form class="form-inline inline-block-form" action="{{route('newsletter.admin.index')}}" method="get">
+        <input class="form-control" type="text" name="q" placeholder="Search subscribers" value="{{$query}}">
+    </form>
+</div>
 @if ($query)
     <a href="{{route('newsletter.admin.index')}}" class="btn btn-info" title="Clear filtering"><i class="fas fa-times"></i></a>
 @endif

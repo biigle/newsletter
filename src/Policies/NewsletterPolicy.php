@@ -24,6 +24,23 @@ class NewsletterPolicy extends CachedPolicy
     }
 
     /**
+     * Determine if the given user can access a newsletter.
+     *
+     * @param User $user
+     * @param Newsletter $n
+     *
+     * @return bool
+     */
+    public function access(?User $user, Newsletter $n)
+    {
+        if (is_null($n->published_at)) {
+            return $user && $user->can('sudo');
+        }
+
+        return true;
+    }
+
+    /**
      * Determine if the given user can update a newsletter.
      *
      * @param User $user

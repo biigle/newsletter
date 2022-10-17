@@ -2,16 +2,17 @@
 
 namespace Biigle\Tests\Modules\Newsletter\Http\Controllers\Views;
 
+use Biigle\Modules\Newsletter\Newsletter;
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use Biigle\Modules\Newsletter\Notifications\VerifyEmail;
 use Biigle\Modules\Newsletter\Notifications\Unsubscribed;
 use Biigle\Tests\UserTest;
 use Honeypot;
 use Illuminate\Support\Facades\Notification;
-use TestCase;
+use ApiTestCase;
 use View;
 
-class NewsletterControllerTest extends TestCase
+class NewsletterControllerTest extends ApiTestCase
 {
     public function testIndex()
     {
@@ -143,5 +144,25 @@ class NewsletterControllerTest extends TestCase
     public function testUnsubscribed()
     {
         $this->get('newsletter/unsubscribed')->assertSuccessful();
+    }
+
+    public function testShow()
+    {
+        $n = Newsletter::factory()->create(['published_at' => '2022-10-17 16:43:00']);
+
+        $this->get("newsletter/show/{$n->id}")->assertStatus(200);
+
+        $this->markTestIncomplete('Implement rendering of mail message.');
+    }
+
+    public function testShowDraft()
+    {
+        $n = Newsletter::factory()->create();
+
+        $this->get("newsletter/show/{$n->id}")->assertStatus(403);
+
+        $this->beGlobalAdmin();
+
+        $this->get("newsletter/show/{$n->id}")->assertStatus(200);
     }
 }

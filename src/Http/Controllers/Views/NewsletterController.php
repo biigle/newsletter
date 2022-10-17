@@ -6,8 +6,10 @@ use Biigle\Http\Controllers\Views\Controller;
 use Biigle\Modules\Newsletter\Http\Requests\DestroyNewsletterSubscriber;
 use Biigle\Modules\Newsletter\Http\Requests\EmailVerificationRequest;
 use Biigle\Modules\Newsletter\Http\Requests\StoreNewsletterSubscriber;
+use Biigle\Modules\Newsletter\Newsletter;
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use Biigle\Modules\Newsletter\Notifications\Unsubscribed;
+use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
 {
@@ -114,5 +116,19 @@ class NewsletterController extends Controller
     public function unsubscribed()
     {
         return view('newsletter::unsubscribed');
+    }
+
+    /**
+     * Shows the newsletter.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return mixed
+     */
+    public function show(Request $request, $id)
+    {
+        $n = Newsletter::findOrFail($id);
+
+        $this->authorize('access', $n);
     }
 }

@@ -19,11 +19,25 @@ $router->group([
 $router->group([
     'namespace' => 'Views',
 ], function ($router) {
-    $router->get('admin/newsletter', [
-       'uses' => 'AdminController@index',
-       'middleware' => ['auth:web', 'can:sudo'],
-       'as' => 'newsletter.admin.index',
-    ]);
+    $router->group([
+        'prefix' => 'admin',
+        'middleware' => ['auth:web', 'can:sudo'],
+    ], function ($router) {
+        $router->get('newsletter', [
+           'uses' => 'AdminController@index',
+           'as' => 'newsletter.admin.index',
+        ]);
+
+        $router->get('newsletter/create', [
+           'uses' => 'AdminController@create',
+           'as' => 'newsletter.admin.create',
+        ]);
+
+        $router->get('newsletter/{id}/edit', [
+           'uses' => 'AdminController@edit',
+           'as' => 'newsletter.admin.edit',
+        ]);
+    });
 
     $router->get('newsletter', [
        'uses' => 'NewsletterController@index',
@@ -31,6 +45,10 @@ $router->group([
 
     $router->post('newsletter/subscribe', [
        'uses' => 'NewsletterController@create',
+    ]);
+
+    $router->get('newsletter/show/{id}', [
+       'uses' => 'NewsletterController@show',
     ]);
 
     $router->get('newsletter/verify', [

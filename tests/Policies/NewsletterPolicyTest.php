@@ -5,6 +5,7 @@ namespace Biigle\Tests\Modules\Newsletter\Policies;
 use ApiTestCase;
 use Biigle\Modules\Newsletter\Newsletter;
 use Biigle\Role;
+use Gate;
 
 class NewsletterPolicyTest extends ApiTestCase
 {
@@ -24,6 +25,32 @@ class NewsletterPolicyTest extends ApiTestCase
         $this->assertFalse($this->admin()->can('create', Newsletter::class));
         $this->assertTrue($this->globalAdmin()->can('create', Newsletter::class));
     }
+
+    public function testAccess()
+    {
+        $this->assertFalse(Gate::allows('access', $this->newsletter));
+        $this->assertFalse($this->globalGuest()->can('access', $this->newsletter));
+        $this->assertFalse($this->user()->can('access', $this->newsletter));
+        $this->assertFalse($this->guest()->can('access', $this->newsletter));
+        $this->assertFalse($this->editor()->can('access', $this->newsletter));
+        $this->assertFalse($this->expert()->can('access', $this->newsletter));
+        $this->assertFalse($this->admin()->can('access', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('access', $this->newsletter));
+    }
+
+    public function testAccessPublished()
+    {
+        $this->newsletter->published_at = '2022-10-17 16:47';
+        $this->assertTrue(Gate::allows('access', $this->newsletter));
+        $this->assertTrue($this->globalGuest()->can('access', $this->newsletter));
+        $this->assertTrue($this->user()->can('access', $this->newsletter));
+        $this->assertTrue($this->guest()->can('access', $this->newsletter));
+        $this->assertTrue($this->editor()->can('access', $this->newsletter));
+        $this->assertTrue($this->expert()->can('access', $this->newsletter));
+        $this->assertTrue($this->admin()->can('access', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('access', $this->newsletter));
+    }
+
 
     public function testUpdate()
     {
