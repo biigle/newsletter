@@ -34,19 +34,4 @@ class UpdateNewsletter extends FormRequest
             'body' => 'required_without:subject|string',
         ];
     }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if (!is_null($this->newsletter->published_at)) {
-                $validator->errors()->add('id', 'Only unpublished newsletters can be updated.');
-            }
-        });
-    }
 }

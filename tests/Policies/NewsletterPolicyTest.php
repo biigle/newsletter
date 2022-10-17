@@ -35,4 +35,15 @@ class NewsletterPolicyTest extends ApiTestCase
         $this->assertFalse($this->admin()->can('create', $this->newsletter));
         $this->assertTrue($this->globalAdmin()->can('create', $this->newsletter));
     }
+
+    public function testDestroy()
+    {
+        $this->assertFalse($this->globalGuest()->can('destroy', $this->newsletter));
+        $this->assertFalse($this->user()->can('destroy', $this->newsletter));
+        $this->assertFalse($this->guest()->can('destroy', $this->newsletter));
+        $this->assertFalse($this->editor()->can('destroy', $this->newsletter));
+        $this->assertFalse($this->expert()->can('destroy', $this->newsletter));
+        $this->assertFalse($this->admin()->can('destroy', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('destroy', $this->newsletter));
+    }
 }

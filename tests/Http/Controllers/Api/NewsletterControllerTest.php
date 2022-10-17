@@ -65,6 +65,31 @@ class NewsletterControllerTest extends ApiTestCase
         $this->beGlobalAdmin();
         $this->putJson("/api/v1/newsletters/{$n->id}", [
             'subject' => 'Text',
-        ])->assertStatus(422);
+        ])->assertStatus(403);
+    }
+
+    public function testDestroyDraft()
+    {
+        $n = Newsletter::factory()->create();
+
+        $this->doTestApiRoute('DELETE', "/api/v1/newsletters/{$n->id}");
+
+        $this->beAdmin();
+        $this->deleteJson("/api/v1/newsletters/{$n->id}")->assertStatus(403);
+
+        $this->beGlobalAdmin();
+        $this->deleteJson("/api/v1/newsletters/{$n->id}")->assertStatus(200);
+
+        $this->assertNull($n->fresh());
+    }
+
+    public function testDestroyPublished()
+    {
+        $n = Newsletter::factory()->create([
+            'published_at' => '2022-10-17 15:36:00',
+        ]);
+
+        $this->beGlobalAdmin();
+        $this->deleteJson("/api/v1/newsletters/{$n->id}")->assertStatus(403);
     }
 }

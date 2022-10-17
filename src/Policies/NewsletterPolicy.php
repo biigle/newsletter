@@ -33,6 +33,27 @@ class NewsletterPolicy extends CachedPolicy
      */
     public function update(User $user, Newsletter $n)
     {
+        if (!is_null($n->published_at)) {
+            return $this->deny('Published newsletters cannot be updated.');
+        }
+
+        return $user->can('sudo');
+    }
+
+    /**
+     * Determine if the given user can destroy a newsletter.
+     *
+     * @param User $user
+     * @param Newsletter $n
+     *
+     * @return bool
+     */
+    public function destroy(User $user, Newsletter $n)
+    {
+        if (!is_null($n->published_at)) {
+            return $this->deny('Published newsletters cannot be deleted.');
+        }
+
         return $user->can('sudo');
     }
 }

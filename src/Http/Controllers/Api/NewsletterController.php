@@ -57,4 +57,26 @@ class NewsletterController extends Controller
             return $this->fuzzyRedirect();
         }
     }
+
+    /**
+     * Delete a newsletter draft
+     *
+     * @api {delete} newsletters/:id Delete a newsletter draft
+     * @apiGroup Newsletter
+     * @apiName DestroyNewsletter
+     * @apiPermission admin
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $n = Newsletter::findOrFail($id);
+        $this->authorize('destroy', $n);
+        $n->delete();
+
+        if (!$this->isAutomatedRequest()) {
+            return $this->fuzzyRedirect();
+        }
+    }
 }
