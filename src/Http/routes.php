@@ -5,6 +5,11 @@ $router->group([
     'prefix' => 'api/v1',
     'middleware' => ['api', 'auth:web,api'],
 ], function ($router) {
+    $router->resource('newsletters', 'NewsletterController', [
+        'only' => ['store'],
+        'parameters' => ['newsletters' => 'id'],
+    ]);
+
     $router->resource('newsletter-subscribers', 'NewsletterSubscriberController', [
         'only' => ['destroy'],
         'parameters' => ['newsletter-subscribers' => 'id'],

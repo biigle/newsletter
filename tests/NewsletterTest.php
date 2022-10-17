@@ -17,4 +17,13 @@ class NewsletterTest extends ModelTestCase
         $this->assertNotNull($this->model->updated_at);
         $this->assertNull($this->model->published_at);
     }
+
+    public function testDraftScope()
+    {
+        $n = Newsletter::draft()->first();
+        $this->assertEquals($this->model->id, $n->id);
+        $n->published_at = now();
+        $n->save();
+        $this->assertEquals(0, Newsletter::draft()->count());
+    }
 }

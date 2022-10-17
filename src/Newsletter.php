@@ -3,6 +3,7 @@
 namespace Biigle\Modules\Newsletter;
 
 use Biigle\Modules\Newsletter\Database\Factories\NewsletterFactory;
+use Biigle\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,18 @@ class Newsletter extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    /**
+     * Scope a query to all draft newsletters
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDraft($query)
+    {
+        return $query->whereNull('published_at');
+    }
 
     /**
      * Publishes this newsletter if it wasn't alerady published.
