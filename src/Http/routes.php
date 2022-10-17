@@ -6,7 +6,7 @@ $router->group([
     'middleware' => ['api', 'auth:web,api'],
 ], function ($router) {
     $router->resource('newsletters', 'NewsletterController', [
-        'only' => ['store'],
+        'only' => ['store', 'update'],
         'parameters' => ['newsletters' => 'id'],
     ]);
 

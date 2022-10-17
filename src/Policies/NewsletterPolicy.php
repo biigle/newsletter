@@ -22,4 +22,17 @@ class NewsletterPolicy extends CachedPolicy
     {
         return $user->can('sudo');
     }
+
+    /**
+     * Determine if the given user can update a newsletter.
+     *
+     * @param User $user
+     * @param Newsletter $n
+     *
+     * @return bool
+     */
+    public function update(User $user, Newsletter $n)
+    {
+        return $user->can('sudo');
+    }
 }

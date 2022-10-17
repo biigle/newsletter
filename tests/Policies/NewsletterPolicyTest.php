@@ -11,7 +11,7 @@ class NewsletterPolicyTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->subscriber = Newsletter::factory()->create();
+        $this->newsletter = Newsletter::factory()->create();
     }
 
     public function testCreate()
@@ -23,5 +23,16 @@ class NewsletterPolicyTest extends ApiTestCase
         $this->assertFalse($this->expert()->can('create', Newsletter::class));
         $this->assertFalse($this->admin()->can('create', Newsletter::class));
         $this->assertTrue($this->globalAdmin()->can('create', Newsletter::class));
+    }
+
+    public function testUpdate()
+    {
+        $this->assertFalse($this->globalGuest()->can('create', $this->newsletter));
+        $this->assertFalse($this->user()->can('create', $this->newsletter));
+        $this->assertFalse($this->guest()->can('create', $this->newsletter));
+        $this->assertFalse($this->editor()->can('create', $this->newsletter));
+        $this->assertFalse($this->expert()->can('create', $this->newsletter));
+        $this->assertFalse($this->admin()->can('create', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('create', $this->newsletter));
     }
 }

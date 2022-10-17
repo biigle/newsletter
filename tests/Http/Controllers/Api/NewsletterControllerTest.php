@@ -34,4 +34,37 @@ class NewsletterControllerTest extends ApiTestCase
         // Only a single draft at a time allowed.
         $this->postJson("/api/v1/newsletters")->assertStatus(422);
     }
+
+    public function testUpdate()
+    {
+        $n = Newsletter::factory()->create(['subject' => 'Test']);
+
+        $this->doTestApiRoute('PUT', "/api/v1/newsletters/{$n->id}");
+
+        $this->beAdmin();
+        $this->putJson("/api/v1/newsletters/{$n->id}")->assertStatus(403);
+
+        $this->beGlobalAdmin();
+        $this->putJson("/api/v1/newsletters/{$n->id}")->assertStatus(422);
+
+        $this->putJson("/api/v1/newsletters/{$n->id}", [
+                'subject' => 'Text',
+            ])
+            ->assertStatus(200);
+
+        $n->refresh();
+        $this->assertEquals('Text', $n->subject);
+    }
+
+    public function testUpdateDraftOnly()
+    {
+        $n = Newsletter::factory()->create([
+            'published_at' => '2022-10-17 15:36:00',
+        ]);
+
+        $this->beGlobalAdmin();
+        $this->putJson("/api/v1/newsletters/{$n->id}", [
+            'subject' => 'Text',
+        ])->assertStatus(422);
+    }
 }
