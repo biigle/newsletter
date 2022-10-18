@@ -151,8 +151,6 @@ class NewsletterControllerTest extends ApiTestCase
         $n = Newsletter::factory()->create(['published_at' => '2022-10-17 16:43:00']);
 
         $this->get("newsletter/show/{$n->id}")->assertStatus(200);
-
-        $this->markTestIncomplete('Implement rendering of mail message.');
     }
 
     public function testShowDraft()

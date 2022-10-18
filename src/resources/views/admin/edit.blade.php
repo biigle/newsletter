@@ -27,7 +27,7 @@
             </div>
             <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
                 <div class="clearfix">
-                    <a class="btn btn-default btn-xs pull-right" href="">Preview</a>
+                    <a class="btn btn-default btn-xs pull-right" href="{{route('newsletter.show', $newsletter->id)}}">Preview</a>
                     <label for="body">Body</label>
                 </div>
                 <textarea name="body" class="form-control" rows="15" @if($readOnly) readonly @endif>{{$newsletter->body}}</textarea>

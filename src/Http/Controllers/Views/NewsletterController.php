@@ -8,6 +8,7 @@ use Biigle\Modules\Newsletter\Http\Requests\EmailVerificationRequest;
 use Biigle\Modules\Newsletter\Http\Requests\StoreNewsletterSubscriber;
 use Biigle\Modules\Newsletter\Newsletter;
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
+use Biigle\Modules\Newsletter\Notifications\NewNewsletter;
 use Biigle\Modules\Newsletter\Notifications\Unsubscribed;
 use Illuminate\Http\Request;
 
@@ -128,7 +129,8 @@ class NewsletterController extends Controller
     public function show(Request $request, $id)
     {
         $n = Newsletter::findOrFail($id);
-
         $this->authorize('access', $n);
+
+        return (new NewNewsletter($n))->toMail(null);
     }
 }

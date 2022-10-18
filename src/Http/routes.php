@@ -49,6 +49,7 @@ $router->group([
 
     $router->get('newsletter/show/{id}', [
        'uses' => 'NewsletterController@show',
+       'as' => 'newsletter.show',
     ]);
 
     $router->get('newsletter/verify', [
