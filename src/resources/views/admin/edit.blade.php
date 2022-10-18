@@ -5,7 +5,17 @@
 @section('admin-content')
 <div class="row">
     <div class="col-md-offset-3 col-md-6">
-        <h4>Edit newsletter draft</h4>
+        <h4 class="clearfix">
+            Edit newsletter draft
+
+            <span class="pull-right">
+                <form method="POST" action="{{ url('api/v1/newsletters', $newsletter->id) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" class="btn btn-danger btn-xs" value="Discard" title="Discard this draft">
+                </form>
+            </span>
+        </h4>
 
         <form role="form" method="POST" action="{{ url('api/v1/newsletters', $newsletter->id) }}">
             <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">

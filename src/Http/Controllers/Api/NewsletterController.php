@@ -30,7 +30,7 @@ class NewsletterController extends Controller
         if (!$this->isAutomatedRequest()) {
             return $this->fuzzyRedirect('newsletter.admin.edit', $n->id)
                 ->with('message', 'New newsletter draft created.')
-                ->with('messageType', 'success');;
+                ->with('messageType', 'success');
         }
 
         return $n;
@@ -76,7 +76,9 @@ class NewsletterController extends Controller
         $n->delete();
 
         if (!$this->isAutomatedRequest()) {
-            return $this->fuzzyRedirect();
+            return $this->fuzzyRedirect('newsletter.admin.index')
+                ->with('message', 'New newsletter draft discarded.')
+                ->with('messageType', 'success');
         }
     }
 }
