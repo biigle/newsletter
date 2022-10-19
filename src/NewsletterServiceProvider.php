@@ -36,6 +36,7 @@ class NewsletterServiceProvider extends ServiceProvider
                 'adminIndex',
                 'adminMenu',
                 'registrationForm',
+                'notificationTabs',
             ],
             'controllerMixins' => [
                 'createNewUser' => RegisterControllerMixin::class.'@create',

@@ -6,6 +6,7 @@
 
 <div class="clearfix">
     <div class="pull-right">
+        <a href="{{route('newsletter.notifications.index')}}" class="btn btn-default">View archive</a>
         @if ($draft)
             <a class="btn btn-info" href="{{route('newsletter.admin.edit', $draft->id)}}"><i class="fa fa-inbox"></i> Edit draft</a>
         @else

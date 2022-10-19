@@ -26,4 +26,12 @@ class NewsletterTest extends ModelTestCase
         $n->save();
         $this->assertEquals(0, Newsletter::draft()->count());
     }
+
+    public function testPublishedScope()
+    {
+        $this->assertEquals(0, Newsletter::published()->count());
+        $this->model->published_at = now();
+        $this->model->save();
+        $this->assertEquals(1, Newsletter::published()->count());
+    }
 }

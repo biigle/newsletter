@@ -42,19 +42,16 @@ class Newsletter extends Model
     }
 
     /**
-     * Publishes this newsletter if it wasn't alerady published.
+     * Scope a query to all published newsletters
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    // public function publish()
-    // {
-    //     if (!is_null($this->published_at)) {
-    //         return;
-    //     }
-
-    //     $this->published_at = Carbon::now();
-    //     $this->save();
-    //     $users = User::select('id')->get();
-    //     Notification::send($users, new NewSystemMessageNotification($this));
-    // }
+    public function scopePublished($query)
+    {
+        return $query->whereNotNull('published_at');
+    }
 
     /**
      * Create a new factory instance for the model.

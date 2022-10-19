@@ -43,6 +43,15 @@ $router->group([
         ]);
     });
 
+    $router->group([
+        'middleware' => ['auth:web'],
+    ], function ($router) {
+        $router->get('notifications/newsletter', [
+           'uses' => 'NewsletterArchiveController@index',
+           'as' => 'newsletter.notifications.index',
+        ]);
+    });
+
     $router->get('newsletter', [
        'uses' => 'NewsletterController@index',
     ]);
