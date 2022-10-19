@@ -58,6 +58,23 @@ class NewsletterPolicy extends CachedPolicy
     }
 
     /**
+     * Determine if the given user can publish a newsletter.
+     *
+     * @param User $user
+     * @param Newsletter $n
+     *
+     * @return bool
+     */
+    public function publish(User $user, Newsletter $n)
+    {
+        if (!is_null($n->published_at)) {
+            return $this->deny('Published newsletters cannot be published.');
+        }
+
+        return $user->can('sudo');
+    }
+
+    /**
      * Determine if the given user can destroy a newsletter.
      *
      * @param User $user

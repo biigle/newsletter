@@ -3,11 +3,15 @@
 namespace Biigle\Modules\Newsletter\Notifications;
 
 use Biigle\Modules\Newsletter\Newsletter;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewNewsletter extends Notification
+class NewNewsletter extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     public Newsletter $newsletter;
 
     /**

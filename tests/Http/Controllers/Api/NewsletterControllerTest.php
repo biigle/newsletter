@@ -4,6 +4,9 @@ namespace Biigle\Tests\Modules\Newsletter\Http\Controllers\Api;
 
 use ApiTestCase;
 use Biigle\Modules\Newsletter\Newsletter;
+use Biigle\Modules\Newsletter\NewsletterSubscriber;
+use Biigle\Modules\Newsletter\Notifications\NewNewsletter;
+use Illuminate\Support\Facades\Notification;
 
 class NewsletterControllerTest extends ApiTestCase
 {
@@ -81,6 +84,39 @@ class NewsletterControllerTest extends ApiTestCase
         $this->deleteJson("/api/v1/newsletters/{$n->id}")->assertStatus(200);
 
         $this->assertNull($n->fresh());
+    }
+
+    public function testPublish()
+    {
+        Notification::fake();
+
+        $verified = NewsletterSubscriber::factory()->create([
+            'email_verified_at' => '2022-10-19 10:47:00',
+        ]);
+        $subscriber = NewsletterSubscriber::factory()->create();
+        $n = Newsletter::factory()->create(['subject' => 'Test']);
+
+        $this->doTestApiRoute('POST', "/api/v1/newsletters/{$n->id}/publish");
+
+        $this->beAdmin();
+        $this->postJson("/api/v1/newsletters/{$n->id}/publish")->assertStatus(403);
+
+        $this->beGlobalAdmin();
+
+        $this->assertNull($n->published_at);
+        $this->postJson("/api/v1/newsletters/{$n->id}/publish")->assertStatus(200);
+        $n->refresh();
+        $this->assertNotNull($n->published_at);
+
+        Notification::assertSentTo([$verified], NewNewsletter::class);
+        Notification::assertNotSentTo([$subscriber], NewNewsletter::class);
+    }
+
+    public function testPublishDraftOnly()
+    {
+        $n = Newsletter::factory()->create(['published_at' => '2022-10-19 10:30:00']);
+        $this->beGlobalAdmin();
+        $this->postJson("/api/v1/newsletters/{$n->id}/publish")->assertStatus(404);
     }
 
     public function testDestroyPublished()

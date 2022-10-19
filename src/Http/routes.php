@@ -10,6 +10,10 @@ $router->group([
         'parameters' => ['newsletters' => 'id'],
     ]);
 
+    $router->post('newsletters/{id}/publish', [
+        'uses' => 'NewsletterController@publish',
+    ]);
+
     $router->resource('newsletter-subscribers', 'NewsletterSubscriberController', [
         'only' => ['destroy'],
         'parameters' => ['newsletter-subscribers' => 'id'],

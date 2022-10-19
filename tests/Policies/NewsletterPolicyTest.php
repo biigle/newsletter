@@ -54,13 +54,24 @@ class NewsletterPolicyTest extends ApiTestCase
 
     public function testUpdate()
     {
-        $this->assertFalse($this->globalGuest()->can('create', $this->newsletter));
-        $this->assertFalse($this->user()->can('create', $this->newsletter));
-        $this->assertFalse($this->guest()->can('create', $this->newsletter));
-        $this->assertFalse($this->editor()->can('create', $this->newsletter));
-        $this->assertFalse($this->expert()->can('create', $this->newsletter));
-        $this->assertFalse($this->admin()->can('create', $this->newsletter));
-        $this->assertTrue($this->globalAdmin()->can('create', $this->newsletter));
+        $this->assertFalse($this->globalGuest()->can('update', $this->newsletter));
+        $this->assertFalse($this->user()->can('update', $this->newsletter));
+        $this->assertFalse($this->guest()->can('update', $this->newsletter));
+        $this->assertFalse($this->editor()->can('update', $this->newsletter));
+        $this->assertFalse($this->expert()->can('update', $this->newsletter));
+        $this->assertFalse($this->admin()->can('update', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('update', $this->newsletter));
+    }
+
+    public function testPublish()
+    {
+        $this->assertFalse($this->globalGuest()->can('publish', $this->newsletter));
+        $this->assertFalse($this->user()->can('publish', $this->newsletter));
+        $this->assertFalse($this->guest()->can('publish', $this->newsletter));
+        $this->assertFalse($this->editor()->can('publish', $this->newsletter));
+        $this->assertFalse($this->expert()->can('publish', $this->newsletter));
+        $this->assertFalse($this->admin()->can('publish', $this->newsletter));
+        $this->assertTrue($this->globalAdmin()->can('publish', $this->newsletter));
     }
 
     public function testDestroy()

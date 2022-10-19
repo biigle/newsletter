@@ -6,7 +6,10 @@ use Biigle\Http\Controllers\Api\Controller;
 use Biigle\Modules\Newsletter\Http\Requests\StoreNewsletter;
 use Biigle\Modules\Newsletter\Http\Requests\UpdateNewsletter;
 use Biigle\Modules\Newsletter\Newsletter;
+use Biigle\Modules\Newsletter\NewsletterSubscriber;
+use Biigle\Modules\Newsletter\Notifications\NewNewsletter;
 use Illuminate\Http\Request;
+use Notification;
 
 class NewsletterController extends Controller
 {
@@ -55,6 +58,34 @@ class NewsletterController extends Controller
 
         if (!$this->isAutomatedRequest()) {
             return $this->fuzzyRedirect();
+        }
+    }
+
+    /**
+     * Publish a newsletter
+     *
+     * @api {post} newsletters/:id/publish Publish a newsletter
+     * @apiGroup Newsletter
+     * @apiName PublishNewsletter
+     * @apiPermission admin
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function publish($id)
+    {
+        $n = Newsletter::draft()->findOrFail($id);
+        $this->authorize('publish', $n);
+        $n->published_at = now();
+        $n->save();
+
+        $subscribers = NewsletterSubscriber::verified()->get();
+        Notification::send($subscribers, new NewNewsletter($n));
+
+        if (!$this->isAutomatedRequest()) {
+            return $this->fuzzyRedirect()
+                ->with('message', 'Newsletter published.')
+                ->with('messageType', 'success');
         }
     }
 
