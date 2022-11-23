@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Tests\Modules\NewsletterSubscriber;
+namespace Biigle\Tests\Modules\Newsletter;
 
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use ModelTestCase;
