@@ -1,6 +1,5 @@
 <?php
 
-use Biigle\SystemMessage;
 use Biigle\Modules\Newsletter\Newsletter;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -58,7 +57,7 @@ return new class extends Migration
             ->map(fn($n) => (array) $n)
             ->toArray();
 
-        SystemMessage::insert($insert);
+        DB::table('system_messages')->insert($insert);
         Newsletter::truncate();
     }
 };
