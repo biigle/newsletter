@@ -11,7 +11,7 @@
                 @forelse ($newsletters as $newsletter)
                     <li>
                         <strong><a href="{{route('newsletter.show', $newsletter->id)}}">{{$newsletter->subject}}</a></strong>
-                        <p class="text-muted">Published {{$newsletter->published_at->diffForHumans()}}</p>
+                        <p class="text-muted">Published <time datetime="{{$newsletter->published_at->toIso8601String()}}" title="{{$newsletter->published_at->toIso8601String()}}">{{$newsletter->published_at->diffForHumans()}}</time></p>
                     </li>
                 @empty
                     <li class="text-muted">
