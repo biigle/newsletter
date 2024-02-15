@@ -4,11 +4,15 @@ namespace Biigle\Modules\Newsletter\Notifications;
 
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\VerifyEmail as Base;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use URL;
 
-class VerifyEmail extends Base
+class VerifyEmail extends Base implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * Get the verify email notification mail message for the given URL.
      *
