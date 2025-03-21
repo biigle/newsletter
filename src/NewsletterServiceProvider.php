@@ -59,9 +59,9 @@ class NewsletterServiceProvider extends ServiceProvider
             });
         }
 
-        $this->publishes([
-            __DIR__.'/public/assets' => public_path('vendor/newsletter'),
-        ], 'public');
+        // $this->publishes([
+        //     __DIR__.'/public/assets' => public_path('vendor/newsletter'),
+        // ], 'public');
     }
 
     /**
