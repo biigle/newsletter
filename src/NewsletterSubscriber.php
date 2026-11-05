@@ -11,17 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Notification;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
-
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+#[Fillable(['email','email_verified_at',])]
 class NewsletterSubscriber extends Model implements MustVerifyEmailContract
 {
     use HasFactory, Notifiable, MustVerifyEmailTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['email'];
+    
 
     /**
      * The attributes that should be casted to native types.
