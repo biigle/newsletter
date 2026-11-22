@@ -20,9 +20,18 @@ class RegisterControllerMixin
                 'email' => $user->email,
             ]);
 
-            if ($s->wasRecentlyCreated) {
+            if ($this->isBiigleEmailVerificationEnabled()) {
+                if ($user->hasVerifiedEmail()) {
+                    $s->markEmailAsVerified();
+                }
+            } elseif ($s->wasRecentlyCreated) {
                 $s->sendEmailVerificationNotification();
             }
         }
+    }
+
+    protected function isBiigleEmailVerificationEnabled(): bool
+    {
+        return config('biigle.email_verification') && !config('biigle.offline_mode');
     }
 }

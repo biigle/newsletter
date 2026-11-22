@@ -4,9 +4,12 @@ namespace Biigle\Modules\Newsletter;
 
 use Biigle\Modules\Newsletter\Console\Commands\PruneStaleSubscribers;
 use Biigle\Modules\Newsletter\Http\Controllers\Mixins\RegisterControllerMixin;
+use Biigle\Modules\Newsletter\Listeners\MarkSubscriberVerifiedAfterUserVerification;
 use Biigle\Services\Modules;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class NewsletterServiceProvider extends ServiceProvider
@@ -21,6 +24,8 @@ class NewsletterServiceProvider extends ServiceProvider
    */
     public function boot(Modules $modules, Router $router)
     {
+        Event::listen(Verified::class, MarkSubscriberVerifiedAfterUserVerification::class);
+
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'newsletter');
 
