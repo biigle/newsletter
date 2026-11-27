@@ -56,6 +56,30 @@ class NewsletterControllerTest extends ApiTestCase
         Notification::assertSentTo([$s], VerifyEmail::class);
     }
 
+    public function testCreateReusesVerifiedBiigleEmail()
+    {
+        config([
+            'biigle.email_verification' => true,
+            'biigle.offline_mode' => false,
+        ]);
+        Notification::fake();
+        Honeypot::disable();
+        UserTest::create([
+            'email' => 'joe@user.com',
+            'email_verified_at' => now(),
+        ]);
+
+        $this->post('newsletter/subscribe', [
+                'email' => 'joe@user.com',
+                'homepage' => 'abc',
+            ])
+            ->assertRedirect('newsletter/subscribed');
+
+        $subscriber = NewsletterSubscriber::where('email', 'joe@user.com')->firstOrFail();
+        $this->assertTrue($subscriber->hasVerifiedEmail());
+        Notification::assertNothingSent();
+    }
+
     public function testCreateDuplicate()
     {
         Notification::fake();
