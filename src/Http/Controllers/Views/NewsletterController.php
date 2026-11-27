@@ -10,6 +10,7 @@ use Biigle\Modules\Newsletter\Newsletter;
 use Biigle\Modules\Newsletter\NewsletterSubscriber;
 use Biigle\Modules\Newsletter\Notifications\NewNewsletter;
 use Biigle\Modules\Newsletter\Notifications\Unsubscribed;
+use Biigle\User;
 use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
@@ -39,12 +40,22 @@ class NewsletterController extends Controller
             'email' => $request->input('email'),
         ]);
 
-        if ($s->wasRecentlyCreated) {
+        $biigleEmailVerified = false;
+        if (config('biigle.email_verification') && !config('biigle.offline_mode')) {
+            $user = User::where('email', $s->email)->first();
+            $biigleEmailVerified = $user?->hasVerifiedEmail() ?? false;
+        }
+
+        if ($biigleEmailVerified) {
+            if (!$s->hasVerifiedEmail()) {
+                $s->markEmailAsVerified();
+            }
+        } elseif ($s->wasRecentlyCreated) {
             $s->sendEmailVerificationNotification();
         }
 
         if (!$this->isAutomatedRequest()) {
-            return redirect('newsletter/verify');
+            return redirect($biigleEmailVerified ? 'newsletter/subscribed' : 'newsletter/verify');
         }
     }
 
